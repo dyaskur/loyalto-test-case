@@ -56,17 +56,14 @@ while ($activePlayer > 1) {
             }
         }
     }
-    $turns[$turn]['result']   = $diceResults;
-    $turns[$turn]['evaluate'] = $evaluates;
-    $turns[$turn]['score']    = $scores;
 
     echo "Giliran  $turn lempar dadu\n";
     foreach ($players as $player => $result) {
         $score = $oldScores[$player];
         echo "Pemain #".$player." (".$score."): ";
 
-        if (isset($turn['result'][$player])) {
-            echo implode(';', $diceResults[$player]);
+        if (isset($diceResults[$player])) {
+            echo implode(',', $diceResults[$player]);
         } else {
             echo "_ (Berhenti bermain karena tidak memiliki dadu)";
         }
@@ -80,7 +77,7 @@ while ($activePlayer > 1) {
         echo "Pemain #".$player." (".$scores[$player]."): ";
 
         if (isset($evaluates[$player])) {
-            echo implode(';', $evaluates[$player]);
+            echo implode(',', $evaluates[$player]);
         } else {
             echo "_ (Berhenti bermain karena tidak memiliki dadu)";
         }
