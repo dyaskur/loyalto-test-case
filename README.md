@@ -9,3 +9,12 @@ cara run Go dengan menjalankan command berikut
 ```
 go run main.go
 ```
+
+
+PHP Demo:
+![](demo-php.gif)
+
+
+Golang Demo
+![](demo-go.gif)
+
