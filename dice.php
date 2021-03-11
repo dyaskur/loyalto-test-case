@@ -2,10 +2,10 @@
 
 
 echo "Jumlah pemain: ";
-$totalPlayer = trim(fgets(fopen("php://stdin","r")));
+$totalPlayer = trim(fgets(fopen("php://stdin", "r")));
 
 echo "Jumlah dadu: ";
-$totalDice = trim(fgets(fopen("php://stdin","r")));
+$totalDice = trim(fgets(fopen("php://stdin", "r")));
 
 
 $arr       = [];
@@ -23,15 +23,15 @@ for ($i = 1; $i <= $totalPlayer; $i++) {
     $scores[$i] = 0;
 }
 
-    $activePlayer = count(array_filter($players));
+$activePlayer = count(array_filter($players));
 
-if($activePlayer < 1)
-{
+if ($activePlayer < 1) {
     echo "Jumlah pemain atau dadu tidak mencukupi untuk memulai permainan ini";
 }
 while ($activePlayer > 1) {
     $turn++;
     //get dice number result
+    $oldScores   = $scores;
     $diceResults = [];
     $evaluates   = [];
     foreach ($players as $player => $dice) {
@@ -51,9 +51,6 @@ while ($activePlayer > 1) {
                     $players[1]++;
                 }
                 $players[$player] = $dice - 1;
-//                if ($players[$i] <= 0) {
-//                    unset($players[$i]);
-//                }
             } else {
                 $evaluates[$player][] = $rand;
             }
@@ -63,37 +60,38 @@ while ($activePlayer > 1) {
     $turns[$turn]['evaluate'] = $evaluates;
     $turns[$turn]['score']    = $scores;
 
-    $activePlayer = count(array_filter($players));
-}
-
-foreach ($turns as $n => $turn) {
-    echo "Giliran <b> $n</b> lempar dadu<br>";
+    echo "Giliran  $turn lempar dadu\n";
     foreach ($players as $player => $result) {
-        $score = $turn['score'][$player];
+        $score = $oldScores[$player];
         echo "Pemain #".$player." (".$score."): ";
 
         if (isset($turn['result'][$player])) {
-            echo implode(';', $turn['result'][$player]);
+            echo implode(';', $diceResults[$player]);
         } else {
             echo "_ (Berhenti bermain karena tidak memiliki dadu)";
         }
 
-        echo "<br>";
+        echo "\n";
     }
 
-            echo "Setelah evaluasi<br>";
+    echo "Setelah evaluasi\n";
 
     foreach ($players as $player => $result) {
+        echo "Pemain #".$player." (".$scores[$player]."): ";
 
-        echo "Pemain #".$player." (".$turn['score'][$player]."): ";
-
-        if (isset($turn['evaluate'][$player])) {
-            echo implode(';', $turn['evaluate'][$player]);
+        if (isset($evaluates[$player])) {
+            echo implode(';', $evaluates[$player]);
         } else {
             echo "_ (Berhenti bermain karena tidak memiliki dadu)";
         }
-        echo "<br>";
+        echo "\n";
     }
-    echo "==================<br>";
+    echo "==================\n";
+    $activePlayer = count(array_filter($players));
+    if ($activePlayer === 1) {
+        $lastMan = array_keys($players, max($players))[0];
+        echo "Game berakhir karena hanya pemain #".$lastMan." yang memiliki dadu\n";
+        $winner = array_keys($scores, max($scores))[0];
+        echo "Game dimenangkan oleh pemain #".$winner." memiliki poin lebih banyak dari pemain lainnya.\n";
+    }
 }
-
